@@ -151,19 +151,24 @@ make config &&
 ldconfig &&
 echo -e "\e[1;32mInstalado \e[0m"
 
-groupadd asterisk
-useradd -r -d /var/lib/asterisk -g asterisk asterisk
-usermod -aG audio,dialout asterisk
-chown -R asterisk.asterisk /etc/asterisk
-chown -R asterisk.asterisk /var/{lib,log,spool}/asterisk
-chown -R asterisk.asterisk /usr/lib/asterisk
-sleep 1
-cp -p /etc/default/asterisk /etc/default/asterisk.sample
-sed -i 's|#AST_USER="asterisk"|AST_USER="asterisk"|i' /etc/default/asterisk
-sed -i 's|#AST_GROUP="asterisk"|AST_GROUP="asterisk"|i' /etc/default/asterisk
-cp -p /etc/asterisk/asterisk.conf /etc/asterisk/asterisk.conf.sample
-sed -i 's|;runuser = asterisk|runuser = asterisk|i' /etc/asterisk/asterisk.conf
-sed -i 's|;rungroup = asterisk|rungroup = asterisk|i' /etc/asterisk/asterisk.conf
+echo -e "\e[1;33mPermissões: Adicionando permissões de acesso ao Usuário asterisk \e[0m"
+groupadd asterisk &&
+useradd -r -d /var/lib/asterisk -g asterisk asterisk &&
+usermod -aG audio,dialout asterisk &&
+chown -R asterisk.asterisk /etc/asterisk &&
+chown -R asterisk.asterisk /var/{lib,log,spool}/asterisk &&
+chown -R asterisk.asterisk /usr/lib/asterisk &&
+echo -e "\e[1;32mAdicionado \e[0m"
+
+echo -e "\e[1;33mAlterando: Arquivos do Asterisk \e[0m"
+cp -p /etc/default/asterisk /etc/default/asterisk.sample &&
+sed -i 's|#AST_USER="asterisk"|AST_USER="asterisk"|i' /etc/default/asterisk &&
+sed -i 's|#AST_GROUP="asterisk"|AST_GROUP="asterisk"|i' /etc/default/asterisk &&
+cp -p /etc/asterisk/asterisk.conf /etc/asterisk/asterisk.conf.sample &&
+sed -i 's|;runuser = asterisk|runuser = asterisk|i' /etc/asterisk/asterisk.conf &&
+sed -i 's|;rungroup = asterisk|rungroup = asterisk|i' /etc/asterisk/asterisk.conf &&
+echo -e "\e[1;32mAlterando \e[0m"
+
 #cp -p /etc/asterisk/res_odbc.conf /etc/asterisk/res_odbc.conf.sample
 #sed -i 's|enabled => no|enabled => yes|i' /etc/asterisk/res_odbc.conf
 #sed -i 's|dsn => asterisk|dsn => asterisk1|i' /etc/asterisk/res_odbc.conf
@@ -194,8 +199,11 @@ sed -i 's|;rungroup = asterisk|rungroup = asterisk|i' /etc/asterisk/asterisk.con
 
 # Habilitar e Reiniciar o serviço do Asterisk
 
+echo -e "\e[1;33mServiço: Restartando e Habilitando serviço do Asterisk \e[0m"
 systemctl restart asterisk
 systemctl enable asterisk
+echo -e "\e[1;32mHabilitado \e[0m"
 
+echo -e "\e[1;33mServiço: Verificando se está tudo certo \e[0m"
 asterisk -vvvc
-asterisk -rvvv
+echo -e "\e[1;32mTudo certo e pronto para uso! \e[0m"
